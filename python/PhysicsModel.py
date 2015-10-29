@@ -28,7 +28,14 @@ class PhysicsModel:
               self.modelBuilder.out.var("MH").removeRange()
               self.modelBuilder.out.var("MH").setVal(self.options.mass)
             else:
-              self.modelBuilder.doVar("MH[%g]" % self.options.mass); 
+              self.modelBuilder.doVar("MH[%g]" % self.options.mass);
+        if self.options.wildcards:
+            for wildcard, value in self.options.wildcards:
+                if self.modelBuilder.out.var(wildcard):
+                    self.modelBuilder.out.var(wildcard).removeRange()
+                    self.modelBuilder.out.var(wildcard).setVal(float(value))
+                else:
+                    self.modelBuilder.doVar(wildcard+"[%g]" % float(value))
     def preProcessNuisances(self,nuisances):
         "receive the usual list of (name,nofloat,pdf,args,errline) to be edited"
         pass # do nothing by default
